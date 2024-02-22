@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.recruit.repository.MemberRepository">
+    <select id="selectMemberByIdAndPassword" resultType="Member">
+        SELECT `member_no`, `role` FROM member
+        WHERE `id` = #{id} AND `password`= #{password} AND `member_status` = 'ALIVE'
+    </select>
+
+    <select id="selectMemberById" resultType="Member">
+        SELECT `member_no`, `role` FROM member
+        WHERE `id` = #{id} AND `member_status` = 'ALIVE'
+    </select>
+
+</mapper>
