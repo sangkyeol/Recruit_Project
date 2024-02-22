@@ -2,7 +2,9 @@ package com.test.recruit.service.impl;
 
 
 import com.test.recruit.data.dto.req.LogReq;
+import com.test.recruit.data.dto.security.CustomUserDetails;
 import com.test.recruit.data.entity.Member;
+import com.test.recruit.data.enumval.MemberStatus;
 import com.test.recruit.data.enumval.Status;
 import com.test.recruit.exception.DefaultException;
 import com.test.recruit.repository.LogRepository;
@@ -31,7 +33,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(final String username) {
+    public CustomUserDetails loadUserByUsername(final String username) {
         Member member = memberRepository.selectMemberById(username);
         if (member == null) {
             throw new DefaultException("This member does not exist.", HttpStatus.UNAUTHORIZED);
@@ -46,12 +48,18 @@ public class CustomUserDetailsService implements UserDetailsService {
         return createUser(member);
     }
 
-    private User createUser(Member member) {
+    private CustomUserDetails createUser(Member member) {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         grantedAuthorities.add(new SimpleGrantedAuthority(member.getRole().name()));
 
-        return new User(member.getId(),
-                member.getPassword(),
-                grantedAuthorities);
+        CustomUserDetails customUserDetails = CustomUserDetails.builder()
+                .id(member.getId())
+                .memberNo(member.getMemberNo())
+                .password(member.getPassword())
+                .authorities(grantedAuthorities)
+                .memberStatus(MemberStatus.ALIVE)
+                .build();
+
+        return customUserDetails;
     }
 }

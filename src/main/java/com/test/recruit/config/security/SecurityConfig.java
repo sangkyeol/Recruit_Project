@@ -40,7 +40,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorizeRequests) ->
                         authorizeRequests
                                 .requestMatchers("/api/v1/member/login", "/api/v1/member/sign-up").permitAll()
-                                .requestMatchers("/api/v1/host/manage/*", "/api/v1/log/**").hasRole(Constant.ROLE_ADMIN)
+                                .requestMatchers("/api/v1/host/manage", "/api/v1/log/**").hasRole(Constant.ROLE_ADMIN)
                                 .anyRequest().authenticated()
                 )
                 .exceptionHandling((exceptionConfig) ->

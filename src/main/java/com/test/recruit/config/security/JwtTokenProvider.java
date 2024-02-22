@@ -1,9 +1,13 @@
 package com.test.recruit.config.security;
 
 import com.test.recruit.data.dto.res.TokenRes;
+import com.test.recruit.data.dto.security.CustomUserDetails;
+import com.test.recruit.service.impl.CustomUserDetailsService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +28,7 @@ import static com.test.recruit.constant.Constant.AUTHORITIES_KEY;
 import static com.test.recruit.constant.Constant.AUTHORIZATION_BEARER;
 
 @Slf4j
+@RequiredArgsConstructor
 @Component
 public class JwtTokenProvider implements InitializingBean {
 
@@ -37,6 +42,8 @@ public class JwtTokenProvider implements InitializingBean {
     private long refreshTokenValidityInSeconds;
 
     private Key key;
+
+    private final CustomUserDetailsService customUserDetailsService;
 
     @Override
     public void afterPropertiesSet() {
@@ -125,14 +132,9 @@ public class JwtTokenProvider implements InitializingBean {
                 .parseClaimsJws(token)
                 .getBody();
 
-        Collection<? extends GrantedAuthority> authorities =
-                Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
-                        .map(SimpleGrantedAuthority::new)
-                        .collect(Collectors.toList());
-
-        User principal = new User(claims.getSubject(), "", authorities);
-
-        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
+        log.info("fsanf;oasfasnfnfanfnf;anf");
+        CustomUserDetails userDetails = customUserDetailsService.loadUserByUsername(claims.getSubject());
+        return new UsernamePasswordAuthenticationToken(userDetails, token, userDetails.getAuthorities());
     }
 
     /**

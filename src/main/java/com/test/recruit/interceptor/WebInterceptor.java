@@ -35,29 +35,9 @@ public class WebInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        String authorization = request.getHeader(AUTHORIZATION_HEADER);
-
-        if (authorization != null) {
-            String token = util.removeBearerPrefix(authorization);
-
-            // token 유효성 검증
-            if (jwtTokenProvider.validateToken(token)) {
-
-                // jwt 토큰으로 id 가져오기
-                String id = jwtTokenProvider.getMemberIdByToken(token);
-
-                // member select
-                Member member = memberRepository.selectMemberById(id);
-                if (member == null) {
-                    throw new DefaultException("The member not exist.", HttpStatus.BAD_REQUEST);
-                }
-
-                // request 객체에 member 적재
-                request.setAttribute("member", member);
-                return true;
-            }
-        }
-
+        /**
+         * 추후 커스텀 header 검증 등에서 사용
+         */
         return true;
     }
 
