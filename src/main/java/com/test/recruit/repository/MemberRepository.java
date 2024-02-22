@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MemberRepository {
-    Member selectMemberByIdAndPassword(@Param("id") String id, @Param("password") String password);
-
     Member selectMemberById(@Param("id") String id);
+
+    int insertMember(Member member);
 }
