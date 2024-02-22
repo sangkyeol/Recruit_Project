@@ -6,6 +6,10 @@
     </insert>
 
     <select id="selectHostListCntByNameAndIp">
-        SELECT COUNT(*) FROM `host_list` WHERE `name` = #{name} OR `ip` = #{ip}
+        SELECT COUNT(*) FROM `host_list` WHERE `active_status` = 'ACTIVE' AND `name` = #{name} OR `ip` = #{ip}
+    </select>
+
+    <select id="selectHostListCnt">
+        SELECT COUNT(*) FROM `host_list` WHERE `active_status` = 'ACTIVE'
     </select>
 </mapper>

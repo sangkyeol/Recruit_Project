@@ -12,10 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/v1/host")
 @RequiredArgsConstructor
@@ -27,6 +24,13 @@ public class HostController {
     @Secured("ROLE_ADMIN")
     @PostMapping("/manage")
     public ResponseEntity<ResponseData> postHost(@RequestBody @Validated HostReq.NewHostReq req) {
+        hostService.postHost(req);
+        return new ResponseEntity<>(new ResponseData<>(), HttpStatus.OK);
+    }
+
+    @Secured("ROLE_ADMIN")
+    @GetMapping("/manage")
+    public ResponseEntity<ResponseData> getHost(@RequestBody @Validated HostReq.NewHostReq req) {
         hostService.postHost(req);
         return new ResponseEntity<>(new ResponseData<>(), HttpStatus.OK);
     }

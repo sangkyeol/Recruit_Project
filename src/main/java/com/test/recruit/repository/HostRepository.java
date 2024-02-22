@@ -11,4 +11,7 @@ public interface HostRepository {
     int insertHostList(HostList hostList);
 
     int selectHostListCntByNameAndIp(@Param("name") String name, @Param("ip") String ip);
+
+    int selectHostListCnt();
+
 }
