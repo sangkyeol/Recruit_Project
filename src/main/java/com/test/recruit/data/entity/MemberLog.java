@@ -12,11 +12,11 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class MemberLog {
-    private Integer logNo;
-
     private int memberNo;
     private String type;
     private Status result;
-    private String data; //JSON
     private LocalDateTime registered;
+
+    //add
+    private String id;
 }

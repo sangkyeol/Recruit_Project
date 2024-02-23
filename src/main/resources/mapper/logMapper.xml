@@ -2,8 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.test.recruit.repository.LogRepository">
     <insert id="insertMemberLog" parameterType="MemberLog">
-        INSERT INTO `member_log` (`type`, `member_no`, `result`, `data`) VALUE (#{type}, #{memberNo}, #{result},
-        #{data})
+        INSERT INTO `member_log` (`type`, `member_no`, `result`) VALUE (#{type}, #{memberNo}, #{result})
     </insert>
 
+    <select id="selectMemberLog" resultType="MemberLog">
+        SELECT ML.type, ML.result, ML.registered, M.id
+        FROM `member_log` ML
+        LEFT JOIN `member` M ON M.member_no = ML.member_no
+        ORDER BY ML.log_no DESC
+        LIMIT #{limit}, #{offset}
+    </select>
 </mapper>

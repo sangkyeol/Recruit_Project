@@ -17,9 +17,13 @@ public class HostList {
     private int memberNo;
     private String name;
     private String ip;
-    private Status lastStatus;
-    private LocalDateTime lastChecked;
     private ActiveStatus activeStatus;
     private LocalDateTime registered;
     private LocalDateTime updated;
+
+    //add
+    private Status status;
+    private LocalDateTime lastChecked;
+    private String reason;
+
 }

@@ -1,9 +1,12 @@
 package com.test.recruit.service.impl;
 
 import com.test.recruit.config.security.JwtTokenProvider;
+import com.test.recruit.data.dto.req.LogReq;
 import com.test.recruit.data.dto.req.MemberReq;
 import com.test.recruit.data.dto.res.TokenRes;
+import com.test.recruit.data.dto.security.CustomUserDetails;
 import com.test.recruit.data.entity.Member;
+import com.test.recruit.data.enumval.Status;
 import com.test.recruit.exception.DefaultException;
 import com.test.recruit.repository.MemberRepository;
 import com.test.recruit.service.MemberService;
@@ -27,6 +30,7 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
 
+    private final AsyncService asyncService;
 
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
@@ -60,7 +64,18 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public TokenRes login(MemberReq.SignInReq req) {
-        return getTokenResponse(req.getId(), req.getPassword());
+
+        TokenRes tokenRes = getTokenResponse(req.getId(), req.getPassword());
+        CustomUserDetails userDetails = (CustomUserDetails) jwtTokenProvider.getAuthentication(tokenRes.getAccessToken()).getPrincipal();
+
+        //로그 기록
+        asyncService.saveLog(LogReq.NewLogReq.builder()
+                .type("LOGIN")
+                .memberNo(userDetails.getMemberNo())
+                .result(Status.Y)
+                .build());
+
+        return tokenRes;
     }
 
     /**

@@ -2,6 +2,7 @@ package com.test.recruit.data.dto.req;
 
 import com.test.recruit.data.common.ValidEnum;
 import com.test.recruit.data.enumval.Status;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +19,5 @@ public class LogReq {
         private String type;
         @ValidEnum(enumClass = Status.class)
         private Status result;
-        private String data;
     }
-
 }

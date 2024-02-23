@@ -1,9 +1,11 @@
 package com.test.recruit.service;
 
-import com.test.recruit.data.dto.req.LogReq;
+import com.test.recruit.data.dto.res.LogRes;
+
+import java.util.List;
 
 public interface LogService {
 
-    void saveLog(LogReq.NewLogReq newLogReq);
+    List<LogRes.LogHistoryRes> getLog(int page, int size);
 
 }

@@ -35,20 +35,4 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .allowedOrigins("*") // TODO 배포시 수정
                 .allowedMethods("GET", "POST", "DELETE", "PUT", "OPTIONS");
     }
-
-    @Override
-    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        ObjectMapper objectMapper = Jackson2ObjectMapperBuilder
-                .json()
-                .serializers(new LocalDateTimeSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-                .build();
-
-        converters.add(new MappingJackson2HttpMessageConverter(objectMapper));
-    }
-
-    @Override
-    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(new MemberArgumentResolver());
-    }
-
 }

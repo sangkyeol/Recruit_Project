@@ -15,5 +15,6 @@ public class HostCheck {
     private Integer checkNo;
     private int hostNo;
     private Status status;
+    private String reason;
     private LocalDateTime registered;
 }

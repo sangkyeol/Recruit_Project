@@ -9,7 +9,80 @@
         SELECT COUNT(*) FROM `host_list` WHERE `active_status` = 'ACTIVE' AND `name` = #{name} OR `ip` = #{ip}
     </select>
 
+    <select id="selectHostListCntByName">
+        SELECT COUNT(*) FROM `host_list` WHERE `active_status` = 'ACTIVE' AND `name` = #{name}
+    </select>
+
+    <select id="selectHostListCntByIp">
+        SELECT COUNT(*) FROM `host_list` WHERE `active_status` = 'ACTIVE' AND `ip` = #{ip}
+    </select>
+
     <select id="selectHostListCnt">
         SELECT COUNT(*) FROM `host_list` WHERE `active_status` = 'ACTIVE'
+    </select>
+
+    <select id="selectHostList" resultType="HostList">
+        SELECT
+        `host_no`, `member_no`, `name`, `ip`, `active_status`, `registered`, `updated`
+        FROM `host_list` WHERE `active_status` = 'ACTIVE'
+    </select>
+
+    <select id="selectHostListByHostNo" resultType="HostList" parameterType="Integer">
+        SELECT
+        `host_no`, `name`, `ip`
+        FROM `host_list` WHERE `active_status` = 'ACTIVE' AND `host_no` = #{hostNo}
+    </select>
+
+    <update id="updateHostListActiveStatusDead" parameterType="Integer">
+        UPDATE `host_list` SET `active_status` = 'DEAD', `updated`=NOW() WHERE `host_no` = #{hostNo}
+    </update>
+
+    <update id="updateHostList" parameterType="HostList">
+        UPDATE `host_list` SET
+        `name` = #{name},
+        `ip` = #{ip},
+        `updated`=NOW()
+        WHERE `host_no` = #{hostNo} AND `active_status` = 'ACTIVE'
+    </update>
+
+
+    <select id="selectHostListByMultiHostNo" resultType="HostList">
+        SELECT
+        `host_no`, `ip`
+        FROM `host_list`
+        WHERE `active_status` = 'ACTIVE'
+        AND `host_no` IN
+        <foreach collection="hostNoList" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <insert id="insertHostCheck" parameterType="HostCheck">
+        INSERT INTO `host_check` (`host_no`, `status`, `reason`, `registered`)
+        VALUES ( #{hostNo}, #{status}, #{reason}, #{registered} )
+    </insert>
+
+    <select id="selectHostCheckByHostNo" resultType="HostCheck" parameterType="Integer">
+        SELECT
+        HC.`host_no`, HC.`status`, HC.`reason`, HC.`registered`
+        FROM `host_check` HC
+        LEFT JOIN `host_list` HL ON (HL.`host_no` = HC.`host_no`)
+        WHERE HL.`active_status` = 'ACTIVE'
+        AND HC.`host_no` = #{hostNo}
+        ORDER BY HC.`check_no` DESC LIMIT 1
+    </select>
+
+    <select id="selectHostListWithCheck" resultType="HostList" parameterType="Integer">
+        SELECT
+        HL.`host_no`, HL.name, HL.ip, HC.`status`, HC.`reason`, HC.`registered` AS `lastChecked`
+        FROM `host_list` HL
+        LEFT OUTER JOIN `host_check` HC ON HC.`check_no` = (
+            SELECT `check_no` FROM `host_check` AS HC2 WHERE HC2.`host_no` = HL.`host_no` ORDER BY HC2.`check_no` DESC LIMIT 1
+        )
+        WHERE HL.`active_status` = 'ACTIVE'
+        <if test='hostNo != null'>
+            AND HC.`host_no` = #{hostNo}
+        </if>
+        ORDER BY HC.`check_no` DESC
     </select>
 </mapper>

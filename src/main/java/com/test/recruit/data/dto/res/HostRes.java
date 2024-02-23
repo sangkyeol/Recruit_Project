@@ -15,9 +15,6 @@ public class HostRes {
         private int hostNo;
         private String name;
         private String ip;
-        private Status lastStatus;
-        private LocalDateTime lastChecked;
-        private ActiveStatus activeStatus;
         private LocalDateTime registered;
         private LocalDateTime updated;
     }
@@ -27,19 +24,20 @@ public class HostRes {
     public static class HostStatusRes {
 
         private int hostNo;
-        private String name;
-        private String ip;
+        private String reason;
         private Status status;
-        private LocalDateTime lastSuccessTime;
-        private LocalDateTime lastCheckedTime;
+        private LocalDateTime checked;
     }
 
     @Getter
     @Builder
-    public static class HostHistoryRes {
-
+    public static class HostMonitorRes {
+        private int hostNo;
+        private String name;
+        private String ip;
         private Status status;
-        private LocalDateTime lastCheckedTime;
+        private String reason;
+        private LocalDateTime lastChecked;
     }
 
 }

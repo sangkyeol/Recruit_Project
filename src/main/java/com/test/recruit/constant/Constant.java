@@ -16,4 +16,10 @@ public class Constant {
     //ROLE
     public static final String ROLE_ADMIN = "ADMIN";
 
+    //NETWORK
+    public static final String REASON_TIMEOUT = "TIMEOUT";
+    public static final String REASON_HOST_NOT_FOUND = "HOST_NOT_FOUNT";
+
+
+
 }

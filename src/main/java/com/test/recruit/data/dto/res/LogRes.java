@@ -12,10 +12,9 @@ public class LogRes {
     @Getter
     @Builder
     public static class LogHistoryRes {
-        private Member member;
+        private String id;
         private String type;
         private Status result;
-        private String data;
         private LocalDateTime registered;
     }
 
