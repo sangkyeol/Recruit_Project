@@ -21,6 +21,6 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
     private HandlerExceptionResolver resolver;
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
-        resolver.resolveException(request, response, null, new DefaultException("Not Authorized(1)", HttpStatus.FORBIDDEN));
+        resolver.resolveException(request, response, null, new DefaultException("Invalid Permission", HttpStatus.FORBIDDEN));
     }
 }

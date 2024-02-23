@@ -21,6 +21,6 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     private HandlerExceptionResolver resolver;
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
-        resolver.resolveException(request, response, null, new DefaultException("Not Authorized(2)", HttpStatus.UNAUTHORIZED));
+        resolver.resolveException(request, response, null, new DefaultException("Not Authorized", HttpStatus.UNAUTHORIZED));
     }
 }

@@ -122,6 +122,10 @@ public class HostServiceImpl implements HostService {
 
         boolean nameChanged = false, ipChanged = false;
 
+        if (!StringUtils.hasText(req.getName()) && StringUtils.hasText(req.getIp())) {
+            throw new DefaultException("Name or IP is required", HttpStatus.BAD_REQUEST);
+        }
+
         if (StringUtils.hasText(req.getName()) && !req.getName().equals(hostList.getName())) {
             hostList.setName(req.getName());
             nameChanged = true;
@@ -134,6 +138,10 @@ public class HostServiceImpl implements HostService {
             }
             hostList.setIp(req.getIp());
             ipChanged = true;
+        }
+
+        if (nameChanged == false && ipChanged == false) {
+            throw new DefaultException("Nothing changed", HttpStatus.BAD_REQUEST);
         }
 
         //validation
