@@ -18,7 +18,7 @@ public class CheckHostStatusJob extends QuartzJobBean {
     @Override
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
         log.info("Start CheckHostStatusJob");
-//        hostService.checkHostStatusAsync();
+        hostService.checkHostStatusAsync();
         log.info("End CheckHostStatusJob");
     }
 }

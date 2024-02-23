@@ -74,10 +74,15 @@
 
     <select id="selectHostListWithCheck" resultType="HostList" parameterType="Integer">
         SELECT
-        HL.`host_no`, HL.name, HL.ip, HC.`status`, HC.`reason`, HC.`registered` AS `lastChecked`
+        HL.`host_no`, HL.name, HL.ip, HC.`status`, HC.`reason`, HC3.`registered` AS `lastChecked`
         FROM `host_list` HL
         LEFT OUTER JOIN `host_check` HC ON HC.`check_no` = (
-            SELECT `check_no` FROM `host_check` AS HC2 WHERE HC2.`host_no` = HL.`host_no` ORDER BY HC2.`check_no` DESC LIMIT 1
+        SELECT `check_no` FROM `host_check` AS HC2 WHERE HC2.`host_no` = HL.`host_no` ORDER BY HC2.`check_no` DESC LIMIT
+        1
+        )
+        LEFT OUTER JOIN `host_check` HC3 ON HC3.`check_no` = (
+        SELECT `check_no` FROM `host_check` AS HC4 WHERE HC4.`host_no` = HL.`host_no` AND HC4.`status` = 'Y' ORDER BY
+        HC4.`check_no` DESC LIMIT 1
         )
         WHERE HL.`active_status` = 'ACTIVE'
         <if test='hostNo != null'>
